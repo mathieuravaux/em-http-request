@@ -18,6 +18,8 @@ Async (EventMachine) HTTP client, with support for:
 
     gem install em-http-request
 
+[![Build Status](http://travis-ci.org/mathieuravaux/em-http-request.png)](http://travis-ci.org/mathieuravaux/em-http-request)
+
 - Introductory [screencast](http://everburning.com/news/eventmachine-screencast-em-http-request/)
 - [Issuing GET/POST/etc requests](https://github.com/igrigorik/em-http-request/wiki/Issuing-Requests)
 - [Issuing parallel requests with Multi interface](https://github.com/igrigorik/em-http-request/wiki/Parallel-Requests)
