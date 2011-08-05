@@ -25,8 +25,8 @@ module EventMachine
       @parent.connection_completed
     end
 
-    def unbind
-      @parent.unbind
+    def unbind(reason=nil)
+      @parent.unbind(reason)
     end
   end
 
@@ -156,8 +156,8 @@ module EventMachine
       @pending.push client
     end
 
-    def unbind
-      @clients.map { |c| c.unbind }
+    def unbind(reason)
+      @clients.map { |c| c.unbind(reason) }
 
       if r = @pending.shift
         @clients.push r
@@ -174,6 +174,7 @@ module EventMachine
         end
       end
     end
+    alias :close :unbind
 
     def send_data(data)
       @conn.send_data data

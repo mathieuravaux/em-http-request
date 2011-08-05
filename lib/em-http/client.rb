@@ -3,6 +3,7 @@ module EventMachine
   class HttpClient
     include Deferrable
     include HttpEncoding
+    include HttpStatus
 
     TRANSFER_ENCODING="TRANSFER_ENCODING"
     CONTENT_ENCODING="CONTENT_ENCODING"
@@ -36,7 +37,7 @@ module EventMachine
       @state = :response_header
 
       @response = ''
-      @error = ''
+      @error = nil
       @content_decoder = nil
       @content_charset = nil
     end
@@ -78,7 +79,7 @@ module EventMachine
       @response_header.location && @req.follow_redirect?
     end
 
-    def unbind
+    def unbind(reason = nil)
       if finished?
         if redirect?
 
@@ -106,11 +107,11 @@ module EventMachine
         end
 
       else
-        fail(self)
+        on_error(reason)
       end
     end
 
-    def on_error(msg = '')
+    def on_error(msg = nil)
       @error = msg
       fail(self)
     end
@@ -207,7 +208,7 @@ module EventMachine
 
       @response_header.http_version = version.join('.')
       @response_header.http_status  = status
-      @response_header.http_reason  = 'unknown'
+      @response_header.http_reason  = CODE[status] || 'unknown'
 
       # invoke headers callback after full parse
       # if one is specified by the user
